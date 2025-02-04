@@ -1,0 +1,3 @@
+npx shadcn@latest add button
+npx shadcn@latest add scroll-area
+npm install lucide-react

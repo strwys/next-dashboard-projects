@@ -1,14 +1,17 @@
 "use client"
 
 import React, { FC, useState } from 'react'
+import { signOut } from 'next-auth/react';
 import { 
     Calendar,
-    ChevronDown,
     LayoutDashboardIcon,
-    Home,
     Inbox,
     Search,
-    Settings 
+    Settings,
+    BadgeCheck,
+    ChevronsUpDown,
+    GalleryVerticalEnd,
+    LogOut, 
 } from "lucide-react"
 
 import {
@@ -23,15 +26,6 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-import {
-  BadgeCheck,
-  Bell,
-  ChevronRight,
-  ChevronsUpDown,
-  CreditCard,
-  GalleryVerticalEnd,
-  LogOut
-} from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
@@ -163,13 +157,9 @@ const AppSidebar: FC<SidebarProps> = ({  }) => {
                     <BadgeCheck />
                     Account
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CreditCard />
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Bell />
-                    Notifications
+                  <DropdownMenuItem onClick={() => signOut()}>
+                    <LogOut />
+                    Logout
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               
@@ -214,6 +204,5 @@ const AppSidebar: FC<SidebarProps> = ({  }) => {
     </Sidebar>
   )
 }
-
 
 export default AppSidebar;

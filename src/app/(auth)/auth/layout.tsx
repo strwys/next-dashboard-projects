@@ -18,20 +18,19 @@ export default async function RootLayout({
     children: React.ReactNode;
   }>) {
 
-    const session = await getServerSession(authOptions);
-	console.log("authlayout---->",session)
-    
+  const session = await getServerSession(authOptions);
+	  
 	if (session !== null) {
 		return redirect("/");
 	}
 
-    return (
-      <html lang="en">
-        <body className={`${geistSans.variable} antialiased`}>
-            <main>
-                {children}
-            </main>
-        </body>
-      </html>
-    );
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} antialiased`}>
+          <main>
+              {children}
+          </main>
+      </body>
+    </html>
+  );
 }

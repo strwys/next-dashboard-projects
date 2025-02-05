@@ -26,8 +26,7 @@ export default async function RootLayout({
 }>) {
 
   const session = await getServerSession (authOptions);
-	console.log("dashLayout---->",session)
-  
+
   if (session === null) {
 		return redirect("/auth/signin");
 	}
@@ -35,7 +34,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} antialiased`}>
-      <NextAuthProvider>
+      <NextAuthProvider session={session}>
         <SidebarProvider style={{"--sidebar-width": "20rem","--sidebar-width-mobile": "20rem"} as React.CSSProperties}>
           <AppSidebar />
             <main>

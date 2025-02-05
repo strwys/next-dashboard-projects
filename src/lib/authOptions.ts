@@ -1,4 +1,5 @@
 import { ApiResponse, LoginRequest, User } from "@/app/api/auth/[...nextauth]/api"
+import { LogIn } from "lucide-react"
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
@@ -40,10 +41,10 @@ export const authOptions: NextAuthOptions = {
                         throw new Error(resp.message)    
                     } 
         
-                    const user : User = resp.data 
+                    const user : User = resp.data.user
                     const accessToken = resp.data.token;
 
-                    return {...user, accessToken}
+                    return user
                 } catch(error) {
                     throw error    
                 }                   
@@ -57,13 +58,13 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token.accessToken = user.token!
-                token.user = user
+                token.user = {...user}
             }
             return token
         },
         async session({ session, token }) {
             session.accessToken = token.accessToken as string
-            session.user = token.user as User
+            session.user = token.user
             return session
         }
     },

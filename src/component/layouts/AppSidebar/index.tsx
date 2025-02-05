@@ -1,13 +1,10 @@
 "use client"
 
 import React, { FC, useState } from 'react'
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import { formatUsername } from '@/lib/utils'
+
 import { 
-    Calendar,
-    LayoutDashboardIcon,
-    Inbox,
-    Search,
-    Settings,
     BadgeCheck,
     ChevronsUpDown,
     GalleryVerticalEnd,
@@ -26,45 +23,31 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { 
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuGroup,
+   DropdownMenuItem,
+   DropdownMenuLabel,
+   DropdownMenuSeparator,
+   DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+
+import { 
+   Avatar,
+   AvatarFallback,
+   AvatarImage 
+} from '@/components/ui/avatar';
+import { MenuItems } from '@/constants/menu-item';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
+import { userAgent } from 'next/server';
 
 export const company = {
   name: 'PT. Sarana Abadi Makmur Bersama',
   logo: GalleryVerticalEnd,
   plan: 'cecep.supriadi@samb.co.id'
 };
-
-
-// Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "#",
-    icon: LayoutDashboardIcon,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-]
-
 
 interface SidebarProps {
   
@@ -88,6 +71,10 @@ const session: Session = {
 };
 
 const AppSidebar: FC<SidebarProps> = ({  }) => {
+  const { data: session } = useSession();
+  
+  console.log("1---->", session)
+
   const [activeTab, setActiveTab] = useState("Dashboard");
 
   return (
@@ -107,16 +94,16 @@ const AppSidebar: FC<SidebarProps> = ({  }) => {
                 >
                   <Avatar className='h-8 w-8 rounded-lg'>
                     <AvatarImage
-                      src={session?.user?.image || ''}
-                      alt={session?.user?.name || ''}
+                      src={'https://via.placeholder.com/150'}
+                      alt={formatUsername(session?.user.username!!)}
                     />
                     <AvatarFallback className='rounded-lg'>
-                      {session?.user?.name?.slice(0, 2)?.toUpperCase() || 'CN'}
+                      {session?.user.username?.slice(0, 2)?.toUpperCase() || 'CN'}
                     </AvatarFallback>
                   </Avatar>
                   <div className='grid flex-1 text-left text-sm leading-tight'>
                     <span className='truncate font-semibold'>
-                      {session?.user?.name || ''}
+                      {formatUsername(session?.user.username!!)}
                     </span>
                   </div>
                   <ChevronsUpDown className='ml-auto size-4' />
@@ -134,17 +121,17 @@ const AppSidebar: FC<SidebarProps> = ({  }) => {
                   <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
                     <Avatar className='h-8 w-8 rounded-lg'>
                       <AvatarImage
-                        src={session?.user?.image || ''}
-                        alt={session?.user?.name || ''}
+                        src={'https://via.placeholder.com/150'}
+                        alt={formatUsername(session?.user.username!!)}
                       />
                       <AvatarFallback className='rounded-lg'>
-                        {session?.user?.name?.slice(0, 2)?.toUpperCase() ||
+                        {session?.user.username?.slice(0, 2)?.toUpperCase() ||
                           'CN'}
                       </AvatarFallback>
                     </Avatar>
                     <div className='grid flex-1 text-left text-sm leading-tight'>
                       <span className='truncate font-semibold'>
-                        {session?.user?.name || ''}
+                        {formatUsername(session?.user.username!!)}
                       </span>
                     </div>
                   </div>
@@ -178,7 +165,7 @@ const AppSidebar: FC<SidebarProps> = ({  }) => {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {MenuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a
